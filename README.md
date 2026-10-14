@@ -73,19 +73,23 @@ Command behavior and availability are determined by the released version.
 
 ## Screenshots
 
-Screenshots will document Theia OS as it appears during actual execution.
+The following screenshots document Theia OS during actual execution.
 
-Planned screenshot subjects include:
+### Theia Console
 
-- Theia Console.
-- Available commands.
-- System information.
-- Memory information.
-- The operating system running in a virtual machine.
+![Theia OS screenshot 1](screenshots/Captura%20de%20pantalla%202026-10-14%20194343.png)
 
-Screenshots should be captured from a genuine running build of Theia OS.
+### Screenshot 2
 
-<!-- Add verified screenshots here when available. -->
+![Theia OS screenshot 2](screenshots/Captura%20de%20pantalla%202026-10-14%20195043.png)
+
+### Screenshot 3
+
+![Theia OS screenshot 3](screenshots/Captura%20de%20pantalla%202026-10-14%20195155.png)
+
+### Screenshot 4
+
+![Theia OS screenshot 4](screenshots/Captura%20de%20pantalla%202026-10-14%20195227.png)
 
 ## Compatibility
 
