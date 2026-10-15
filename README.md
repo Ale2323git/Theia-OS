@@ -91,6 +91,10 @@ The following screenshots document Theia OS during actual execution.
 
 ![Theia OS screenshot 4](screenshots/Captura%20de%20pantalla%202026-10-14%20195227.png)
 
+### Theia OS in VirtualBox
+
+![Theia OS in VBox](screenshots/Theia%20OS%20in%20VBox.png)
+
 ## Compatibility
 
 The current development target is a BIOS-based, 32-bit x86 environment.
