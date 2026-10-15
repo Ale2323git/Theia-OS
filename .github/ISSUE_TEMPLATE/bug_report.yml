@@ -1,0 +1,144 @@
+name: Theia OS Technical Bug Report
+about: Report a reproducible technical error in Theia OS
+title: "[BUG] "
+labels: bug
+assignees: ""
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a technical issue in Theia OS.
+        Please provide enough information to help reproduce and diagnose the problem.
+        Do not include passwords, private keys, or other sensitive information.
+
+  - type: input
+    id: version
+    attributes:
+      label: Theia OS version
+      description: Specify the affected release.
+      placeholder: "0.15"
+    validations:
+      required: true
+
+  - type: input
+    id: build
+    attributes:
+      label: Build or disk image
+      description: Provide the build identifier or image name, if known.
+      placeholder: "Build identifier or image filename"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Test environment
+      description: Select the environment where the error occurred.
+      options:
+        - QEMU
+        - VirtualBox
+        - VMware
+        - Real hardware
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: environment_details
+    attributes:
+      label: Environment details
+      description: "Include relevant CPU, architecture, VM settings, or hardware details, if known."
+      placeholder: "e.g. x86 virtual machine, memory allocation, firmware mode"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: boot_stage
+    attributes:
+      label: Affected component or boot stage
+      description: Select where the problem occurs, if identifiable.
+      options:
+        - Stage 1 bootloader
+        - Stage 2 bootloader
+        - Kernel
+        - Init
+        - Theia Console
+        - Memory management
+        - Filesystem
+        - Shutdown or reboot
+        - Other
+        - Unknown
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Technical error description
+      description: Explain what failed and under what circumstances.
+      placeholder: Describe the problem clearly.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to trigger the error.
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should Theia OS have done?
+      placeholder: Describe the expected result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead? Include exact error messages when available.
+      placeholder: Describe the observed result.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Reproducibility
+      description: How consistently does the error occur?
+      options:
+        - Every time
+        - Sometimes
+        - Happened once
+        - Not yet confirmed
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and diagnostic information
+      description: Include relevant boot messages, error codes, logs, or other diagnostic output. You can attach supported files or screenshots in the GitHub issue after creating it.
+      render: text
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I checked whether a similar issue already exists.
+          required: true
+        - label: I have provided the information needed to investigate the error.
+          required: true
