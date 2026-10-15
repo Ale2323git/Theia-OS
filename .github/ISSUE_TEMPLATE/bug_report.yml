@@ -1,5 +1,6 @@
 name: Theia OS Technical Bug Report
 title: "[BUG] "
+description: Report a reproducible technical error in Theia OS.
 labels: bug
 
 body:
