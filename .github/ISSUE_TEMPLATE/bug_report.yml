@@ -1,8 +1,6 @@
 name: Theia OS Technical Bug Report
-about: Report a reproducible technical error in Theia OS
 title: "[BUG] "
 labels: bug
-assignees: ""
 
 body:
   - type: markdown
