@@ -1,0 +1,75 @@
+name: Boot Issue
+description: Report an observable problem during Theia OS startup.
+title: "[Boot]: "
+labels: ["boot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for problems that occur during startup, before or while Theia OS becomes usable.
+        Report observable behavior only. Do not include confidential bootloader or kernel implementation details.
+  - type: input
+    id: version
+    attributes:
+      label: Theia OS version
+      placeholder: "e.g. 0.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: firmware
+    attributes:
+      label: Firmware / boot mode
+      options:
+        - Legacy BIOS
+        - UEFI
+        - Not sure
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Execution environment
+      options:
+        - QEMU
+        - VirtualBox
+        - Physical hardware
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: last_stage
+    attributes:
+      label: Last visible startup stage
+      description: Enter the last screen, message, or stage you could identify.
+    validations:
+      required: false
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: Describe what happens during startup, including any visible error message.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Attach a screenshot or provide a concise description. Remove personal or confidential information.
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked for an existing report about this startup problem.
+          required: true
+        - label: I have not included proprietary source code or confidential information.
+          required: true
