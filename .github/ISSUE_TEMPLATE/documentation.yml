@@ -1,0 +1,52 @@
+name: Documentation
+description: Report an issue or suggest an improvement in public Theia OS documentation.
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for publicly available documentation, project descriptions, and published guides.
+        Do not use it to request or disclose private internal documentation.
+  - type: input
+    id: document
+    attributes:
+      label: Document or page
+      description: Provide the public document title or link.
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Section or location
+      description: Identify the heading, paragraph, or relevant section.
+    validations:
+      required: false
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Type of documentation issue
+      options:
+        - Incorrect information
+        - Missing information
+        - Unclear explanation
+        - Typographical or formatting error
+        - Outdated information
+        - Suggested improvement
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain what is incorrect, missing, or unclear.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested correction
+      description: If possible, provide corrected wording or describe the improvement.
+    validations:
+      required: false
