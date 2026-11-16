@@ -1,0 +1,63 @@
+name: Feature Request
+description: Suggest a capability or user-facing improvement for Theia OS.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest a feature or improvement for Theia OS.
+        This form is for describing the need and expected behavior, not requesting access to proprietary source code.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or need
+      description: What limitation, use case, or need would this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed feature
+      description: Describe the capability you would like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected behavior
+      description: Explain how the feature should work from a user's perspective.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Related area
+      options:
+        - Boot and startup
+        - Kernel
+        - Memory Management
+        - Task Management / Scheduler
+        - System API
+        - Applications and user environment
+        - Console
+        - Filesystem
+        - Hardware support
+        - Other
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: considerations
+    attributes:
+      label: Additional considerations
+      description: Mention compatibility, usability, or architectural considerations, if relevant.
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked that this feature has not already been suggested.
+          required: true
