@@ -1,0 +1,72 @@
+name: Regression Report
+description: Report behavior that worked in an earlier Theia OS version but no longer works.
+title: "[Regression]: "
+labels: ["regression"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when a feature or behavior appears to have regressed between Theia OS versions.
+        Describe externally observable behavior. Do not include proprietary source code or confidential implementation details.
+  - type: input
+    id: last_working
+    attributes:
+      label: Last known working version
+      description: Provide the most recent version in which the behavior worked.
+    validations:
+      required: true
+  - type: input
+    id: first_affected
+    attributes:
+      label: First affected version
+      description: Provide the earliest version in which you observed the problem, if known.
+    validations:
+      required: false
+  - type: input
+    id: feature
+    attributes:
+      label: Affected feature or component
+      description: Identify the user-visible feature or subsystem.
+    validations:
+      required: true
+  - type: textarea
+    id: previous
+    attributes:
+      label: Previous behavior
+      description: Explain what happened in the last known working version.
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: Explain what happens now.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps needed to observe the regression, if known.
+    validations:
+      required: false
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Execution environment
+      options:
+        - QEMU
+        - VirtualBox
+        - Physical hardware
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked for an existing report about this regression.
+          required: true
+        - label: I have not included proprietary source code or confidential information.
+          required: true
