@@ -1,0 +1,71 @@
+name: Hardware Compatibility
+description: Report Theia OS behavior on a physical computer or virtual machine configuration.
+title: "[Hardware]: "
+labels: ["hardware"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to share hardware compatibility results.
+        Include only information you are comfortable making public. Do not post serial numbers, device identifiers, or other personal information.
+  - type: input
+    id: version
+    attributes:
+      label: Theia OS version
+      placeholder: "e.g. 0.x"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device or system model
+      description: Provide the manufacturer and model, if known.
+    validations:
+      required: true
+  - type: input
+    id: cpu
+    attributes:
+      label: CPU
+      description: Provide the processor model, if known.
+    validations:
+      required: false
+  - type: input
+    id: memory
+    attributes:
+      label: Installed memory
+      placeholder: "e.g. 8 GB"
+    validations:
+      required: false
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware and boot mode
+      description: BIOS or UEFI; include firmware version only if known and safe to share.
+    validations:
+      required: false
+  - type: dropdown
+    id: result
+    attributes:
+      label: Test result
+      options:
+        - Boots successfully
+        - Boots with limitations
+        - Fails during startup
+        - Runs but a feature does not work
+        - Not tested yet
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Observations
+      description: Describe what worked, what did not, and any limitations you observed.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Optional screenshots or additional non-sensitive details.
+    validations:
+      required: false
