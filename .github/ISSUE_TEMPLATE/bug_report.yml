@@ -1,0 +1,89 @@
+name: Bug Report
+description: Report an observable problem in Theia OS.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to report a problem you can observe while using or testing Theia OS.
+        Do not include proprietary source code, private implementation details, credentials, or other sensitive information.
+  - type: input
+    id: version
+    attributes:
+      label: Theia OS version
+      description: Provide the version, release identifier, or commit if publicly available.
+      placeholder: "e.g. 0.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      description: Select the closest component.
+      options:
+        - Bootloader
+        - Kernel
+        - Memory Management
+        - Task Management / Scheduler
+        - System API
+        - Console
+        - Filesystem
+        - Other
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem description
+      description: Clearly describe what happened.
+      placeholder: Describe the observable problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect Theia OS to do?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps that lead to the problem, if known.
+      placeholder: |
+        1. Start Theia OS...
+        2. Run or select...
+        3. Observe...
+    validations:
+      required: false
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Execution environment
+      options:
+        - QEMU
+        - VirtualBox
+        - Physical hardware
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Add screenshots or concise, non-sensitive observations. Remove personal data and confidential information.
+      placeholder: "You may attach a screenshot."
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have checked that this issue has not already been reported.
+          required: true
+        - label: I have not included proprietary source code or confidential information.
+          required: true
