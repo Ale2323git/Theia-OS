@@ -1,0 +1,69 @@
+name: Architecture Proposal
+description: Propose a change to Theia OS architecture or subsystem responsibilities.
+title: "[Architecture]: "
+labels: ["architecture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for proposals that may affect kernel structure, subsystem boundaries, interfaces, or system-wide behavior.
+        A proposal is a discussion, not an approval or a commitment to implement it. Do not include proprietary source code or confidential implementation details.
+  - type: input
+    id: area
+    attributes:
+      label: Affected architectural area
+      description: Identify the subsystem, interface, or design area.
+      placeholder: "e.g. Memory Management, task model, boot flow"
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current situation
+      description: Summarize the currently documented behavior or design.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What limitation, inconsistency, or requirement motivates this proposal?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed design
+      description: Describe the proposed change at a conceptual level.
+    validations:
+      required: true
+  - type: textarea
+    id: responsibilities
+    attributes:
+      label: Component responsibilities and interactions
+      description: Explain which components would be responsible and how they would interact.
+    validations:
+      required: false
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility with existing design
+      description: Identify documented decisions, interfaces, or behavior that may be affected.
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Consequences and trade-offs
+      description: Describe benefits, costs, risks, and alternatives considered.
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Before submitting
+      options:
+        - label: I understand this is a proposal for discussion and is not pre-approved.
+          required: true
+        - label: I have not included proprietary source code or confidential information.
+          required: true
