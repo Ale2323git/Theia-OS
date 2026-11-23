@@ -1,242 +1,101 @@
 # Boot Architecture
 
-Theia OS uses a native boot path designed for its own kernel and system images.
-It does not use GRUB, UEFI, or another operating system's loader in the
-documented 0.18 line.
-
-This document explains the public boot architecture: the platform assumptions,
-the stages of the boot process, the handoff to the kernel, and the transition to
-the interactive console. It does not disclose private memory addresses, disk
-layouts, or implementation details.
+Theia OS uses a native BIOS boot path. It does not use GRUB, UEFI, or another
+operating system's loader. This document describes the public boot architecture
+without publishing private implementation details.
 
 ## Platform and distribution
 
-The documented Theia OS platform is:
+- BIOS-class x86 system;
+- complete bootable `.img` disk image;
+- native Theia boot path;
+- Ring 0 kernel, Ring 3 Init, and Ring 3 Mashel.
 
-- a BIOS-class x86 system;
-- a complete bootable `.img` disk image;
-- a native two-stage Theia boot path;
-- a kernel followed by separate Init and Console system images.
-
-The disk image is distributed through
+Images are distributed through
 [GitHub Releases](https://github.com/Ale2323git/Theia-OS/releases). The
-repository does not distribute source code or buildable source packages.
+published 0.18 image was validated in the reference virtual environment.
+Physical-hardware coverage remains limited.
 
-The primary validation environment is QEMU. Earlier development sessions
-recorded successful BIOS/QEMU boots, but the latest documentation pass did not
-reproduce a boot. Physical-hardware coverage is limited and is not claimed
-broadly.
+## Boot phases
 
-## Boot stages at a glance
-
-| Stage | Purpose | Output |
+| Phase | Purpose | Result |
 | --- | --- | --- |
-| Firmware | Initializes the platform and starts the boot device | Control transferred to the Theia boot path |
-| First-stage loader | Starts the second stage from the boot image | Second-stage loader running |
-| Second-stage loader | Discovers memory and loads the kernel and system images | Kernel and images placed in memory |
-| Kernel entry | Establishes protected-mode execution and paging | Kernel initialization running |
-| Kernel initialization | Brings up interrupts, timing, memory, scheduling, objects, IPC, synchronization, diagnostics, and platform services | System ready for Init |
-| Init | Performs the initial system-image handoff | Control transferred to Console |
-| Console | Presents the interactive environment | User-visible console |
+| Firmware | Starts the boot device | Native Theia boot path running |
+| Native boot path | Prepares the system and loads components | Kernel and system components available |
+| Kernel initialization | Establishes Ring 0 services | Boot coordinator available |
+| Boot coordinator | Mandatory handoff role documented as `initland` | Init prepared in Ring 3 |
+| Init | Prepares the user environment | Mashel started in Ring 3 |
+| Mashel | Presents the interactive environment | `theia>` prompt |
 
-## Firmware and the first-stage loader
+## Firmware and native boot
 
-The platform firmware starts the boot process from the Theia disk image. The
-first-stage loader is the initial Theia-controlled code that runs.
-
-Its job is deliberately narrow:
-
-- establish a stable real-mode environment;
-- preserve the information needed by the next stage;
-- load the second-stage loader from the boot image;
-- transfer control to the second stage.
-
-If the first stage cannot read the second stage, it reports the failure and
-stops. It does not attempt to continue with an incomplete boot.
-
-## Second-stage loader
-
-The second stage performs the work needed to prepare the kernel environment.
-
-### Memory discovery
-
-The loader asks the platform firmware for the system memory map. It records the
-usable and reserved regions and makes the map available to the kernel.
-
-Memory discovery is a prerequisite for everything that follows. The kernel
-cannot manage physical memory, build page tables, or place system images without
-a reliable map of what memory exists and what must be reserved.
-
-If the firmware memory map is invalid, the boot process reports the failure and
-stops.
-
-### Loading the kernel and system images
-
-The loader places the following into memory:
-
-- the kernel image;
-- the Init image;
-- the Console image.
-
-Each image has a reserved destination and a size limit enforced by the boot
-path. The loader verifies that the images fit and that their memory regions do
-not overlap. A failure to load any required image is reported and stops the
-boot.
-
-### Transfer to the kernel
-
-After the kernel and system images are in place, the loader transfers control to
-the kernel entry point.
-
-## Kernel entry
-
-The kernel entry path establishes the execution environment required by the
-kernel:
-
-1. establish the processor's protected-mode environment;
-2. prepare the kernel's execution state;
-3. prepare the initial virtual memory environment;
-4. enable paging;
-5. enter the kernel's main initialization routine.
-
-These steps are part of the public architecture at a conceptual level. The
-specific processor structures, addresses, and instruction sequences are private
-implementation details.
+The native boot path prepares the execution environment, obtains basic memory
+information from firmware, and loads the kernel and system components. Invalid
+or missing components stop the boot with a diagnostic.
 
 ## Kernel initialization
 
-The kernel initializes its services in a dependency order. The public sequence
-is:
+Kernel initialization brings up, in dependency order:
 
-1. **Execution environment.** Establish the processor state and the kernel's
-   basic runtime environment.
-2. **Diagnostic logging.** Make it possible to record boot progress and
-   failures before other services exist.
-3. **Interrupt and exception handling.** Prepare the system to receive hardware
-   events and processor faults.
-4. **Timing.** Start the system timer that drives preemption, timeouts, and
-   uptime.
-5. **Memory discovery and management.** Classify physical memory, initialize
-   page management, and prepare virtual memory.
-6. **Privilege-transition support.** Prepare the structures needed for
-   user-mode execution.
-7. **Scheduling.** Initialize the task scheduler and its idle context.
-8. **Objects, handles, IPC, and synchronization.** Bring up the kernel's
-   resource model and services.
-9. **Platform services.** Initialize firmware power management and other
-   platform-dependent services. A failure here is treated as non-fatal where
-   the system can continue safely.
-10. **System interface publication.** Publish the interface that Init and
-    Console use to interact with the kernel.
-11. **Interrupts enabled.** Enable interrupts and complete kernel startup.
+1. the execution environment;
+2. diagnostic reporting;
+3. interrupts, exceptions, and timing;
+4. memory management;
+5. privilege and task support;
+6. resources, communication, and synchronization;
+7. platform services;
+8. system state available to the user environment.
 
-Each stage depends on the guarantees established by the previous stages. A
-fatal failure produces a diagnostic message and stops the system instead of
-continuing with an undefined state.
+A fatal initializer failure produces a diagnostic and stops the system safely.
 
-## Handoff to Init
+## Boot coordination and `initland`
 
-After kernel initialization, control passes to the Init image.
+Theia OS requires a mandatory coordinator for the kernel-to-userland handoff.
+The public architecture names this role `initland`. The coordinator is
+established by kernel initialization and is not a userland component.
 
-Init is the first system image to run after the kernel. Its role in the
-documented 0.18 line is deliberately small:
+The coordinator prepares the handoff, creates Init as a Ring 3 component, and
+remains responsible for the privileged side of the startup path. An unexpected
+failure of this phase is fatal.
 
-- establish its own execution environment;
-- perform its initial user-mode preparation;
-- hand control to the Console image.
+## Init in Ring 3
 
-Init is not yet a general service manager or application launcher. It is a
-handoff stage in the boot architecture.
+Init is the first Ring 3 component. It confirms the handoff, prepares the user
+environment, creates Mashel through the public system interfaces, and reports
+readiness. The kernel never skips Init to start Mashel directly.
 
-## Handoff to Console
+## Mashel in Ring 3
 
-Console is the interactive system image. It receives control from Init and:
-
-- validates the kernel interface it was given;
-- initializes the VGA text console;
-- reads keyboard input;
-- presents a command prompt;
-- provides built-in commands for system information, memory information,
-  uptime, help, screen clearing, reboot, shutdown, echo, and the user-mode
-  demonstration;
-- launches a user-mode task when requested.
-
-Console does not access kernel memory directly. It uses the interface published
-by the kernel during initialization.
-
-## Boot-time interfaces
-
-The boot path and the kernel exchange a small set of public, well-defined
-information:
-
-- the platform memory map;
-- the location and size of the kernel and system images;
-- the kernel interface used by Init and Console;
-- the firmware services needed for early boot.
-
-The exact binary layouts and addresses are private implementation details and are
-not documented here.
+Mashel is the official console component. It presents the Theia OS Mashel banner
+and the `theia>` prompt. It interacts through public system services. It does
+not access hardware directly; privileged work is handled through defined
+system-provided channels.
 
 ## Failure behavior
 
-The boot architecture defines explicit failure behavior:
-
 | Failure | Result |
 | --- | --- |
-| First-stage loader cannot read the second stage | Diagnostic message and halt |
-| Firmware memory map is invalid | Diagnostic message and halt |
-| Kernel image cannot be loaded | Diagnostic message and halt |
-| Init image cannot be loaded | Diagnostic message and halt |
-| Console image cannot be loaded | Diagnostic message and halt |
-| A fatal kernel initializer fails | Diagnostic message and halt |
-| A non-fatal platform service is unavailable | Warning logged; boot continues where safe |
+| Firmware or boot path cannot start | Diagnostic and halt |
+| Required system component cannot be loaded | Diagnostic and halt |
+| Fatal kernel initializer fails | Diagnostic and safe halt |
+| Non-fatal platform service unavailable | Warning where safe to continue |
 
-The system does not silently skip a required image or continue with an invalid
-memory map.
+## Validation
 
-## Boot validation
-
-The boot architecture is implemented and compiled into the distributed disk
-image. The current validation position is:
-
-- **Build:** the system builds a complete bootable image.
-- **Host tests:** kernel and system services are exercised by host-side test
-  suites.
-- **BIOS/QEMU:** earlier sessions recorded successful boots and console use.
-  The latest documentation pass did not reproduce a QEMU or physical-hardware
-  boot.
-- **Physical hardware:** coverage is limited and not broadly claimed.
-
-See [Development Status](../Development/Development-Status.md) for the current
-evidence matrix.
-
-## Relationship to the rest of the system
-
-The boot path is the beginning of the system architecture, not a separate
-product. It establishes the conditions that the kernel, Init, Console, and user
-tasks rely on:
-
-- a known memory map;
-- a controlled processor environment;
-- loaded system images;
-- a published kernel interface;
-- a defined failure path.
-
-The rest of the architecture is described in
-[Architecture Overview](Overview.md), [Kernel Architecture](Kernel-Architecture.md),
-and [System Architecture](System-Architecture.md).
+- A complete bootable image is produced by the internal build process.
+- The published 0.18 image was validated in the reference virtual environment.
+- Validation confirmed the Mashel banner and `theia>` prompt on text output.
+- Physical-hardware validation is limited and not broadly claimed.
 
 ## Related documentation
 
 - [Architecture Overview](Overview.md)
 - [Kernel Architecture](Kernel-Architecture.md)
 - [System Architecture](System-Architecture.md)
-- [Memory Management](../Components/Memory-Management.md)
-- [Process Management](../Components/Process-Management.md)
+- [Running Theia OS](../Installation/Running-Theia-OS.md)
 - [Development Status](../Development/Development-Status.md)
-- [Version History](../Development/Version-History.md)
 
 ---
 
 Theia OS is proprietary software. This document describes public boot
-architecture and does not disclose private implementation details.
+architecture only and does not disclose private implementation details.

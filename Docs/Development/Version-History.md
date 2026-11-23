@@ -1,142 +1,114 @@
 # Version History
 
-This page records Theia OS development milestones. It distinguishes development
-history from public release artifacts.
+This page records public development milestones. It distinguishes development
+history from published releases.
 
-- **Development milestones** are recorded from the project's versioned work.
-- **Public releases** are published on
-  [GitHub Releases](https://github.com/Ale2323git/Theia-OS/releases) with their
-  own versions, dates, notes, and disk images.
+- Development milestones are recorded from the project's versioned work.
+- Public releases are published on
+  [GitHub Releases](https://github.com/Ale2323git/Theia-OS/releases).
 - A milestone listed here is not automatically a public release.
-- No release version or release date is invented on this page.
+- No future release version or date is invented here.
 
 ## Versioning
 
-Theia OS uses a simple `0.x` version line during its foundational development.
-The current documented milestone is **0.18**. Later version numbers are not
-assigned here.
-
-The version line describes development progress, not production maturity. A
-higher number does not mean the system is ready for general use.
+Theia OS's foundational development is recorded in a `0.x` line. The most
+recent milestone recorded in this history is **0.18**. Later versions appear
+only in the roadmap as planned work.
 
 ## Recorded milestones
 
 | Version | Development date | Milestone | Summary |
 | --- | --- | --- | --- |
-| 0.8 | 2026-10-04 | Memory Foundation | Established the physical memory foundation |
-| 0.9 | 2026-10-07 | Memory Region Manager | Added memory-region classification and management |
-| 0.12 | 2026-10-10 | Input Foundation | Established keyboard input support |
-| 0.13 | 2026-10-11 | Console Expansion | Expanded the console environment |
-| 0.14 | 2026-10-11 | Console Expansion | Continued console expansion |
-| 0.15 | 2026-10-12 | Basic Closed | Recorded the "Basic Closed" development milestone |
-| 0.16 | 2026-10-21 | Allocator Complete & Complete Shutdown | Completed allocator work and shutdown support |
-| 0.17 | 2026-11-01 | Scheduler Foundation | Established the task scheduler foundation |
-| 0.18 | 2026-11-14 | Syscalls Foundation | Established the system call and diagnostics foundation |
+| 0.8 | 2026-10-04 | Memory Foundation | Physical memory foundation |
+| 0.9 | 2026-10-07 | Memory Region Manager | Region classification and management |
+| 0.12 | 2026-10-10 | Input Foundation | Keyboard input support |
+| 0.13 | 2026-10-11 | Console Expansion | Early interactive environment expansion |
+| 0.14 | 2026-10-11 | Console Expansion | Continued interactive environment expansion |
+| 0.15 | 2026-10-12 | Basic Closed | Recorded "Basic Closed" milestone |
+| 0.16 | 2026-10-21 | Allocator Complete & Complete Shutdown | Allocator and shutdown work completed |
+| 0.17 | 2026-11-01 | Scheduler Foundation | Task scheduler foundation |
+| 0.18 | 2026-11-14 | System API Foundation | System API, diagnostics, Mashel, and published image validation |
 
-The dates above are development dates recorded in the project's history, not
-public release dates.
+The dates are recorded development dates, not public release dates. Earlier
+development than 0.8 is not recorded in the available public history.
 
-The available history begins at 0.8. Earlier development is not recorded in the
-version history available for this documentation.
+"Console Expansion" is a historical milestone name. The current official
+console component name is Mashel.
 
-## 0.18 — System calls and diagnostics foundation
+## 0.18 — System API Foundation
 
-The 0.18 line establishes the public system-service layer on top of the earlier
-kernel foundation.
+The 0.18 line established the public system-service layer on top of the earlier
+kernel foundation. Its documented scope includes:
 
-Documented scope includes:
+- a System API foundation in eight areas: System, Diagnostics, Text Output,
+  Memory, Handle, Task, Synchronization, and IPC;
+- system information, time, uptime, and bounded logging;
+- defined critical-failure presentations with a safe halt on every fatal path;
+- native BIOS boot with a coordinator role documented as `initland`;
+- Ring 3 Init starting Ring 3 Mashel through public system interfaces;
+- Mashel banner, `theia>` prompt, and text output verified in the reference
+  virtual environment;
+- a published complete image validated as a usable system image.
 
-- a System API foundation covering tasks, memory, handles, IPC,
-  synchronization, and system services. It is not a complete final API;
-- system information queries for memory, the boot memory map, scheduler
-  statistics, kernel identity, and interface information;
-- real-time clock time and monotonic uptime reporting;
-- per-task last-error reporting;
-- a bounded kernel logging service with application log submission;
-- integration of diagnostics with the scheduler, memory subsystem, IPC,
-  synchronization, and console;
-- a user-mode demonstration that exercises system calls end to end.
+The internal build and validation process is private and is not described here.
 
-The 0.18 line does not add a persistent filesystem, networking, the Standway
-application-facing API, a native application ecosystem, a graphical desktop, or
-POSIX compatibility.
+The 0.18 line does not add a persistent filesystem, Standway, native
+application loading, Program Foundation, a graphical desktop, POSIX
+compatibility, networking, USB, audio, SMP, or UEFI boot.
 
 ## 0.17 — Scheduler foundation
 
-The 0.17 line establishes the task scheduler and task model:
-
-- preemptive, round-robin scheduling for single-processor systems;
-- kernel and user tasks;
-- explicit task states;
-- task creation, waiting, and termination;
-- blocking and wait queues;
-- task ownership;
-- address-space activation for user tasks;
-- scheduler statistics.
+The 0.17 line established preemptive Task scheduling, task states, ownership,
+waiting, and cleanup. The system schedules Tasks, not executables.
 
 ## 0.16 — Allocator completion and shutdown
 
-The 0.16 line completes allocator work and adds complete shutdown support. It
-builds on the memory work from earlier milestones and prepares the system for
-the scheduler and system-service layers that follow.
+The 0.16 line completed allocator work and shutdown support, preparing the
+system for the scheduler and system-service layers.
 
 ## 0.15 — Basic Closed
 
-The 0.15 line records the "Basic Closed" development milestone. It is part of
-the sequence leading to the later scheduler and system-service foundation.
+The 0.15 line records the "Basic Closed" development milestone.
 
-## 0.13 and 0.14 — Console expansion
+## 0.13 and 0.14 — Interactive environment expansion
 
-The 0.13 and 0.14 lines expand the console environment. They build on the input
-foundation from 0.12 and prepare the interactive environment used by later
-milestones.
+These lines expanded the early interactive environment. Their "Console"
+milestone wording is historical; the current component is Mashel.
 
 ## 0.12 — Input foundation
 
-The 0.12 line establishes keyboard input support. Input is a prerequisite for
-the interactive console and its built-in commands.
+The 0.12 line established keyboard input support for the interactive
+environment.
 
 ## 0.9 — Memory region manager
 
-The 0.9 line adds memory-region classification and management on top of the 0.8
-memory foundation. This work supports later physical and virtual memory
-management.
+The 0.9 line added memory-region classification and management on top of the
+0.8 memory foundation.
 
 ## 0.8 — Memory foundation
 
-The 0.8 line establishes the physical memory foundation. It is the earliest
-milestone recorded in the available version history.
+The 0.8 line established the physical memory foundation. It is the earliest
+milestone recorded in the available public history.
 
-## Long-term direction
+## Future direction
 
-The project's long-term architectural direction includes a dedicated persistent
-filesystem, the Standway application-facing API, a native application ecosystem,
-and a graphical desktop experience. These are goals, not features of 0.18, and
-they are not assigned a version or date on this page.
+The fixed roadmap order is:
+
+1. 0.19 — Standway, codename Pequita.
+2. 0.20 — Filesystem Foundation.
+3. 0.21–0.23 — Filesystem maturation.
+4. 0.24 — Program Foundation: Loader and Executor.
+
+These are planned versions, not completed work. Ring 1 and Ring 2 availability
+is deferred until HAL Foundation, and Mihriban is deferred while application
+support does not exist.
 
 ## Public releases
 
-The public repository distributes complete Theia OS `.img` disk images through
-[GitHub Releases](https://github.com/Ale2323git/Theia-OS/releases).
-
-- Release versions, dates, and notes are published on the Releases page.
-- This page does not assert a release date or a release version that is not
-  published there.
-- The repository does not distribute source code, source packages, or buildable
-  source trees.
-- A release image is a complete system image, not a source archive.
-
-## Stability and compatibility
-
-Theia OS is in foundational development. The public documentation distinguishes:
-
-- interfaces and behaviors that are part of the documented architecture;
-- capabilities that are implemented but have limited validation;
-- capabilities that are not implemented.
-
-A version milestone does not imply backward compatibility with another operating
-system, nor does it imply that every interface is permanently frozen. Public
-contracts are treated as long-lived, but the system as a whole is still evolving.
+Complete Theia OS `.img` images are published through
+[GitHub Releases](https://github.com/Ale2323git/Theia-OS/releases). Release
+versions, dates, and notes are published there; this page does not invent them.
+The repository does not distribute source code or buildable source trees.
 
 ## Related documentation
 
